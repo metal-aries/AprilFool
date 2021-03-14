@@ -1,0 +1,6 @@
+*.sln
+.vs/
+*.vcxproj
+*.filters
+*.user
+AprilFool/App/
