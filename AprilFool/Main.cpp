@@ -3,14 +3,21 @@
 
 void Main()
 {
+	//ダイアログからテキストファイル選択
 	auto _path = Dialog::OpenFile({ FileFilter::Text() });
 	
+	//ファイルを開き、テキストファイルリーダーに格納
 	TextReader _reader;
 	if (_path.has_value())
 		_reader.open(_path.value());
 
-	//readの過去形ってreadじゃなかったっけ？？？知らね。
-	Console(_reader.readAll());
+	//1行ずつ文字列配列として_inputに格納
+	Array<String> _input;
+	while (auto line = _reader.readLine())
+		_input.push_back(line.value_or(U"EOF"));
+
+	for (size_t i = 0; i < _input.size(); i++)
+		Console(U"[" + Format(i) + U"]: " + _input[i]);
 
 	//このループないとコンソールで動作チェックができない。落とし穴。
 	while (System::Update())
