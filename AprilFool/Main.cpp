@@ -5,12 +5,11 @@ void Main()
 {
 	//ダイアログからテキストファイル選択
 	auto _path = Dialog::OpenFile({ FileFilter::Text() });
-	
-	//ファイルを開き、テキストファイルリーダーに格納
-	TextReader _reader;
-	if (_path.has_value())
-		_reader.open(_path.value());
+	if (_path.has_value() != true)
+		exit(true);
 
+	//ファイルを開き、テキストファイルリーダーに格納
+	TextReader _reader(_path.value());
 	//1行ずつ文字列配列として_inputに格納
 	Array<String> _inputs;
 	while (auto line = _reader.readLine())
@@ -34,14 +33,19 @@ void Main()
 				_outputs[line].append(U"　");
 		}
 
-	for (auto& output : _outputs)
-		Console(output);
+	FilePath _outputPath = FileSystem::ParentPath(_path.value()) + FileSystem::BaseName(_path.value()) + U"_vertical" + U".txt";
+	TextWriter _writer(_outputPath);
 
+	for(auto& output : _outputs)
+	_writer.write(output + U"\n");
+
+	/*
 	//このループないとコンソールで動作チェックができない。落とし穴。
 	while (System::Update())
 	{
 
 	}
+	*/
 }
 
 //
