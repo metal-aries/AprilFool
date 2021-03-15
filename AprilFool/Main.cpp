@@ -10,19 +10,23 @@ void Main()
 
 	//ファイルを開き、テキストファイルリーダーに格納
 	TextReader _reader(_path.value());
+
 	//1行ずつ文字列配列として_inputに格納
 	Array<String> _inputs;
 	while (auto line = _reader.readLine())
 		_inputs.push_back(line.value_or(U"EOF"));
 
+	//一番長い行の数を取得
 	int _len = 0;
 	for (auto& input : _inputs)
 		if (input.size() > _len)
 			_len = input.size();
 
+	//一番長い行の文字数分の行を確保
 	Array<String> _outputs;
 	_outputs.resize(_len);
 
+	//縦横変換
 	for (int line = 0; line < _len; line++)
 		for (int row = _inputs.size() - 1; row >= 0; row--)
 		{
@@ -33,9 +37,11 @@ void Main()
 				_outputs[line].append(U"　");
 		}
 
+	//出力ファイルのパスを生成
 	FilePath _outputPath = FileSystem::ParentPath(_path.value()) + FileSystem::BaseName(_path.value()) + U"_vertical" + U".txt";
 	TextWriter _writer(_outputPath);
 
+	//テキスト出力
 	for(auto& output : _outputs)
 	_writer.write(output + U"\n");
 
