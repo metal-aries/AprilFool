@@ -12,12 +12,30 @@ void Main()
 		_reader.open(_path.value());
 
 	//1行ずつ文字列配列として_inputに格納
-	Array<String> _input;
+	Array<String> _inputs;
 	while (auto line = _reader.readLine())
-		_input.push_back(line.value_or(U"EOF"));
+		_inputs.push_back(line.value_or(U"EOF"));
 
-	for (size_t i = 0; i < _input.size(); i++)
-		Console(U"[" + Format(i) + U"]: " + _input[i]);
+	int _len = 0;
+	for (auto& input : _inputs)
+		if (input.size() > _len)
+			_len = input.size();
+
+	Array<String> _outputs;
+	_outputs.resize(_len);
+
+	for (int line = 0; line < _len; line++)
+		for (int row = _inputs.size() - 1; row >= 0; row--)
+		{
+			_outputs[line].push_back(' ');
+			if (_inputs[row].size() > line)
+				_outputs[line].push_back(_inputs[row][line]);
+			else
+				_outputs[line].append(U"　");
+		}
+
+	for (auto& output : _outputs)
+		Console(output);
 
 	//このループないとコンソールで動作チェックができない。落とし穴。
 	while (System::Update())
