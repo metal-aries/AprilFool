@@ -37,6 +37,12 @@ void Main()
 				_outputs[line].append(U"　");
 		}
 
+	for (int line = 0; line < _len; line++)
+	{
+		if (_outputs[line][0] == ' ')
+			_outputs[line].pop_front();
+	}
+
 	//出力ファイルのパスを生成
 	FilePath _outputPath = FileSystem::ParentPath(_path.value()) + FileSystem::BaseName(_path.value()) + U"_vertical" + U".txt";
 	TextWriter _writer(_outputPath);
